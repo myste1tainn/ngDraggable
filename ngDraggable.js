@@ -1,7 +1,7 @@
 (function(){
-	var mod = angular.module('draggy', [])
+	var mod = angular.module('ngDraggable', [])
 
-	.service('$draggy', function($document){
+	.service('$drag', function($document){
 		/*****************************************************************************
 		 *
 		 *
@@ -148,7 +148,7 @@
 	.directive('draggableObject', function(){
 		return {
 			restrict: 'A',
-			controller: function($scope, $element, $attrs, $document, $draggy) {
+			controller: function($scope, $element, $attrs, $document, $drag) {
 				var _self 			= this;
 
 				// Represents the data it carries
@@ -348,7 +348,7 @@
 				}
 
 				// Let draggy service watch this(DraggableObject)'s events
-				$draggy.$watchDraggable(this);
+				$drag.$watchDraggable(this);
 			},
 			controllerAs: 'draggableObject'
 		}
@@ -360,7 +360,7 @@
 	.directive('dropTarget', function(){
 		return {
 			restrict: 'A',
-			controller: function($scope, $element, $attrs, $draggy){
+			controller: function($scope, $element, $attrs, $drag){
 				var _self = this;
 
 				// Represents its model
@@ -414,7 +414,7 @@
 
 					_element.on('mouseenter', function(){
 						// Need to ask draggy service if the user is dragging something
-						if ($draggy.isDraggingObject()) {
+						if ($drag.isDraggingObject()) {
 							for (var i = _on.dragenter.length - 1; i >= 0; i--) {
 								_on.dragenter[i](_self);
 							};
@@ -422,7 +422,7 @@
 					});
 					_element.on('mouseover', function(){
 						// Need to ask draggy service if the user is dragging something
-						if ($draggy.isDraggingObject()) {
+						if ($drag.isDraggingObject()) {
 							for (var i = _on.dragover.length - 1; i >= 0; i--) {
 								_on.dragover[i](_self);
 							};
@@ -430,7 +430,7 @@
 					});
 					_element.on('mouseout', function(){
 						// Need to ask draggy service if the user is dragging something
-						if ($draggy.isDraggingObject()) {
+						if ($drag.isDraggingObject()) {
 							for (var i = _on.dragleave.length - 1; i >= 0; i--) {
 								_on.dragleave[i](_self);
 							};
@@ -462,7 +462,7 @@
 				}
 
 				// Let draggy service watch this(DraggableObject)'s events
-				$draggy.$watchDropTarget(this);
+				$drag.$watchDropTarget(this);
 			},
 			controllerAs: 'dropTarget'
 		}
