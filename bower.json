@@ -1,0 +1,29 @@
+{
+  "name": "ngDraggable",
+  "version": "0.7",
+  "authors": [
+    "myste1tainn"
+  ],
+  "description": "Drag and Drop AngularJS Module",
+  "keywords": [
+    "drag-and-drop",
+    "drag",
+    "drop",
+    "angular"
+  ],
+  "license": "MIT",
+  "homepage": "https://dev-mysteltainn.rhcloud.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.1",
+    "jquery": "~2.1.4",
+    "modernizr": "~2.8.3"
+  },
+  "main": "ngDraggable.js"
+}
