@@ -86,7 +86,18 @@
 			});
 			draggable.on('dragend', function(object){
 				if (_dropTarget) {
-					_draggable.dataTransfer.transfer(_dropTarget);
+					if (_draggable.dataTransfer.hasData()) {
+						_draggable.dataTransfer.transfer(_dropTarget);
+					} else {
+						// Transfer its element instead
+						_draggable.getElement().appendTo(_dropTarget.getElement());
+
+						console.log(
+							'myste1tainn/ngDraggable', 
+							'WARNING', 
+							'This drag-and-drop has no data to transfer, if this is intentional then you can ignore this message'
+						);
+					}
 
 					for (var i = _on.draggable.lost.length - 1; i >= 0; i--) {
 						_on.draggable.lost[i](_draggable);
@@ -102,7 +113,7 @@
 					_dropTarget	= null;
 				} else {
 
-					console.log('myste1tainn/ngDraggable : Invalid Area Drop');
+					console.log('myste1tainn/ngDraggable :', 'Invalid Area Drop');
 
 				}
 			});
@@ -152,10 +163,23 @@
 				var _self 			= this;
 
 				// Represents the data it carries
-				var _data 			= $scope.$eval($attrs.dragData);
+				var _data, _model;
 
-				// Represents the model in which its data belongs to
-				var _model 			= $scope.$eval($attrs.dragModel);
+				if ($attrs.dragData === 'undefined' || $attrs.dragData === '') {
+
+					_data = null;
+					_model = null;
+
+				} else {
+
+					_data = $scope.$eval($attrs.dragData);
+
+					if ($attrs.dragData === 'undefined' || $attrs.dragData === '') {
+						_model = null;
+					} else {
+						_model = $scope.$eval($attrs.dragModel);
+					}
+				}
 
 				// Represents data transferring
 				this.dataTransfer 	= new DataTransfer(_data, _model);
@@ -472,24 +496,39 @@
 		var _data = data;
 		var _model = model;
 
+		this.hasData = function(){
+			return (typeof _data !== 'undefined' && _data != null);
+		}
+
 		this.transfer = function(receiver, consumeData){
 			consumeData = (typeof consumeData === 'undefined') ? true : consumeData;
+
+			if (typeof _model === 'undefined' || _model == null) {
+				consumeData = false;
+			}
 
 			// Expects receiver to be DropTarget
 			if (receiver.dataTransfer && DataTransfer.prototype.isPrototypeOf(receiver.dataTransfer)) {
 
-				receiver.dataTransfer.receive(_data);
-
 				if (consumeData) { // Consume the data in sender's model
+					receiver.dataTransfer.receive(_data);	
+
 					var i = _model.indexOf(_data);
 
 					if (i > -1) {
 						_model.splice(i, 1);
 					}
+				} else { // Not consuming the data in means cloning
+					var clonedData = angular.copy(_data);
+					receiver.dataTransfer.receive(clonedData);
 				}
 
 			} else {
-				console.log('WARNING', 'the receiver does not implements DataTransfer protocols')
+				console.log(
+					'myste1tainn/ngDraggable', 
+					'WARNING', 
+					'the receiver does not implements DataTransfer protocols'
+				);
 			}
 		}
 		this.receive = function(prop, data){
