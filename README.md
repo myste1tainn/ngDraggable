@@ -1,12 +1,13 @@
 # myste1tainn / ngDraggable
 ngDraggable is a drag-and-drop module for AngularJS capable of creating 
-draggable-objects and drop-target on the fly. More information on this will be on soon.
+draggable-objects and drop-target on the fly. ngDraggable also support Non-HTML5 dragging
+More information on this will be on soon.
 
 ## Installation
 - Install with bower `$ bower install myste1tainn/ngDraggable`
 - Add **ngDraggable** as dependencies e.g. `angular.module('myApp', ['ngDraggable'])`
 
-## Basic Usage
+## Usage
 - For an element to be draggable, add `draggable-object` attribute.
 - For an element to be a drop target, add `drop-target` attribute.
 
@@ -16,9 +17,21 @@ draggable-objects and drop-target on the fly. More information on this will be o
 <div drop-target>Drop Here</div>
 ```
 
+```
+<!-- This is drag-and-drop with data transferring -->
+<!-- This would mean you drag fruit and drop it into baskets -->
+<div ng-repreat="basket in someCtrl.baskets">
+	<div ng-repeat="fruit in basket.fruits" drop-target drop-model="basket.fruits">
+		<div draggable-object drag-data="fruit" drag-model="basket.fruits">
+			{{ fruit.name }}
+		</div>
+	</div>
+</div>
+```
+
 ### Composition
 The module comprises of 2 controllers and 1 service namely:
-`draggableObject`, dropTarget`, and `$drag`
+`draggableObject`, `dropTarget`, and `$drag`. Mostly, you'll be interacting with the service
 
 ### Getting Controllers
 You can access the controllers by using the `$drag` through service injection
@@ -27,11 +40,17 @@ The return object will be currently-dragged-object and currently-dragovered-targ
 respectively, otherwise they will be null.
 
 ```
-.controller('myController', function($scope, $element, $attrs, **$drag**){
+.controller('myController', function($scope, $element, $attrs, $drag){
 	var draggedObject = $drag.$getDraggedObject();
 	var dropTarget = $drag.$getDropTarget();
 })
 ```
+
+### Events
+In myste1tainn/ngDraggable, you can listen to events on both the service and controllers
+If you only need to know the presence/absence of `draggleObjects`/`dropTarget`, then using
+$drag listener should be enough
+
 
 ## Features
 - Drag-and-Drop w/ or w/o data (Automatically transfer, if any)
@@ -39,7 +58,6 @@ respectively, otherwise they will be null.
 - Flexible `draggable-object` specifying
 
 ## Coming Soon
-- Drag-and-Drop controller-controller data transfer
+- Drag-and-Drop cross controller data transfer
 - Drag-and-Drop Reordering
 - Drag-and-Drop Animation
-- Drag-and-Drop Data Cloning
