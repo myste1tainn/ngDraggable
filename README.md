@@ -4,7 +4,8 @@ draggable-objects and drop-target on the fly. More information on this will be o
 
 ## Installation
 - Install with bower `$ bower install myste1tainn/ngDraggable`
-- Add **ngDraggable** as dependencies on your module e.g. `var app = angular.module('myApp', ['ngDraggable'])`
+- Add **ngDraggable** as dependencies on your module e.g. 
+`var app = angular.module('myApp', ['ngDraggable'])`
 
 ## Usage
 - For an element to be draggable, add `draggable-object` attribute.
