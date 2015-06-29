@@ -7,6 +7,10 @@ More information on this will be on soon.
 - Install with bower `$ bower install myste1tainn/ngDraggable`
 - Add **ngDraggable** as dependencies e.g. `angular.module('myApp', ['ngDraggable'])`
 
+## Composition
+The module comprises of 2 controllers and 1 service namely:
+`draggableObject`, `dropTarget`, and `$drag`. Mostly, you'll be interacting with the service
+
 ## Usage
 - For an element to be draggable, add `draggable-object` attribute.
 - For an element to be a drop target, add `drop-target` attribute.
@@ -29,10 +33,6 @@ More information on this will be on soon.
 </div>
 ```
 
-### Composition
-The module comprises of 2 controllers and 1 service namely:
-`draggableObject`, `dropTarget`, and `$drag`. Mostly, you'll be interacting with the service
-
 ### Getting Controllers
 You can access the controllers by using the `$drag` through service injection
 `$drag.$getDraggedObject()` and `$drag.$getDropTarget()`
@@ -49,8 +49,31 @@ respectively, otherwise they will be null.
 ### Events
 In myste1tainn/ngDraggable, you can listen to events on both the service and controllers
 If you only need to know the presence/absence of `draggleObjects`/`dropTarget`, then using
-$drag listener should be enough
+$drag listener should be enough. To attach events listner do 
+`$drag.on('object.event', callback)`, to detach use `.un` instead.
 
+#### Events on $drag
+| Event Name | Description |
+| --------------- | ------------------------------ |
+| draggable.get | Any draggable-object is dragged. |
+| draggable.lost | Any draggable-object is drop. |
+| droptarget.get | Any draggable-object is dragged into any droptarget. |
+| droptarget.lost | Any draggable-object is dragged out of any droptarget. |
+| droptarget.over | Any draggable-object is dragged over any droptarget. |
+
+#### Events on draggedObject (Controller)
+| Event Name | Description |
+| --------------- | ------------------------------ |
+| dragstart | The draggable-object is started being dragged. |
+| drag | The draggable-object is dragged around. |
+| dragend | The draggable-object is dropped. |
+
+#### Events on dropTarget (Controller)
+| Event Name | Description |
+| --------------- | ------------------------------ |
+| dragenter | A draggable-object is dragged into the drop-target. |
+| dragover | A draggable-object is dragged over the drop-target. |
+| dragleave | A draggable-object is dragged out of the drop-target. |
 
 ## Features
 - Drag-and-Drop w/ or w/o data (Automatically transfer, if any)
