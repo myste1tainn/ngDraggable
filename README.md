@@ -15,13 +15,13 @@ The module comprises of 2 controllers and 1 service namely:
 - For an element to be draggable, add `draggable-object` attribute.
 - For an element to be a drop target, add `drop-target` attribute.
 
-```
+```HTML
 <!-- This is drag-and-drop without data transferring -->
 <div draggable-object>Drag Me!</div>
 <div drop-target>Drop Here</div>
 ```
 
-```
+```HTML
 <!-- This is drag-and-drop with data transferring -->
 <!-- This would mean you drag fruit and drop it into baskets -->
 <div ng-repreat="basket in someCtrl.baskets">
@@ -39,7 +39,7 @@ You can access the controllers by using the `$drag` through service injection
 The return object will be currently-dragged-object and currently-dragovered-target
 respectively, otherwise they will be null.
 
-```
+```JavaScript
 .controller('myController', function($scope, $element, $attrs, $drag){
 	var draggedObject = $drag.$getDraggedObject();
 	var dropTarget = $drag.$getDropTarget();
