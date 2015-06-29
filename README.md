@@ -3,6 +3,8 @@ ngDraggable is a drag-and-drop module for AngularJS capable of creating
 draggable-objects and drop-target on the fly. ngDraggable also support Non-HTML5 dragging
 More information on this will be on soon.
 
+[See myste1tainn/ngDraggable in action](http://dev-mysteltainn.rhcloud.com/git/ngdraggable)
+
 ## Installation
 - Install with bower `$ bower install myste1tainn/ngDraggable`
 - Add **ngDraggable** as dependencies e.g. `angular.module('myApp', ['ngDraggable'])`
@@ -49,7 +51,7 @@ respectively, otherwise they will be null.
 ### Events
 In myste1tainn/ngDraggable, you can listen to events on both the service and controllers
 If you only need to know the presence/absence of `draggleObjects`/`dropTarget`, then using
-$drag listener should be enough. To attach events listner do 
+`$drag`'s events should be enough. To attach events listner do 
 `$drag.on('object.event', callback)`, to detach use `.un` instead.
 
 #### Events on $drag

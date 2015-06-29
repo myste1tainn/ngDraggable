@@ -198,8 +198,8 @@
 
 				// Events
 				var _on = {
-					dragStart: [],
-					dragEnd: [],
+					dragstart: [],
+					dragend: [],
 					drag: []
 				};
 
@@ -222,25 +222,24 @@
 				{
 					_element.attr('draggable', 'true');
 					_element.on('dragstart', function(event){
-						_isBeingDragged = true;
 
-						for (var i = _on.dragStart.length - 1; i >= 0; i--) {
-							_on.dragStart[i](_self);
-						};
+						_isBeingDragged = true;
+						_self.trigger('dragstart', _self);
+
 					});
 					_element.on('drag', function(event){
-						for (var i = _on.drag.length - 1; i >= 0; i--) {
-							_on.drag[i](_self);
-						};
+
+						_self.trigger('drag', _self);
+
 					});
 					_element.on('dragend', function(event){
+
 						_isBeingDragged = false;
-						for (var i = _on.dragEnd.length - 1; i >= 0; i--) {
-							_on.dragEnd[i](_self);
-						};
+						_self.trigger('dragend', _self);
 
 						// Apply scope to reflect any model changes
 						$scope.$apply();
+
 					});
 				}
 				/**
@@ -250,34 +249,25 @@
 				{
 					_element.on('mousedown', function(event){
 
-						_self.createDragSilhouette(event.pageX, event.pageY);
 						_isBeingDragged = true;
-
-						for (var i = _on.dragStart.length - 1; i >= 0; i--) {
-							_on.dragStart[i](_self);
-						};
+						_self.createDragSilhouette(event.pageX, event.pageY);
+						_self.trigger('dragstart', _self);
 
 					});
 					angular.element($document[0].body).on('mousemove', function(event){
 
 						if (_dragSilhouette) {
 							_self.moveDragSilhouette(event.pageX, event.pageY);
-
-							for (var i = _on.drag.length - 1; i >= 0; i--) {
-								_on.drag[i](_self);
-							};
+							_self.trigger('drag', _self);
 						}
 
 					});
 					angular.element($document[0].body).on('mouseup', function(event){
 
 						if (_dragSilhouette) {
-							_self.dropDragSilhouette();
 							_isBeingDragged = false;
-
-							for (var i = _on.dragEnd.length - 1; i >= 0; i--) {
-								_on.dragEnd[i](_self);
-							};
+							_self.dropDragSilhouette();
+							_self.trigger('dragend', _self);
 
 							// Apply scope to reflect any model changes
 							$scope.$apply();
@@ -287,6 +277,12 @@
 				}
 
 				// ############### END CONSTRUCTOR
+
+				this.trigger = function(eventName, arguments){
+					for (var i = _on[eventName].length - 1; i >= 0; i--) {
+						_on[eventName][i](arguments);
+					};
+				}
 
 				// ############### NON-HTML5 Mode supoprt methods
 
@@ -347,10 +343,10 @@
 
 				this.on = function (eventName, callback) {
 					if (eventName.toLowerCase() === 'dragstart') {
-						_on.dragStart.push(callback);
+						_on.dragstart.push(callback);
 					}
 					if (eventName.toLowerCase() === 'dragend') {
-						_on.dragEnd.push(callback);
+						_on.dragend.push(callback);
 					}
 					if (eventName.toLowerCase() === 'drag') {
 						_on.drag.push(callback);
@@ -358,12 +354,12 @@
 				}
 				this.un = function (eventName, callback) {
 					if (eventName.toLowerCase() === 'dragstart') {
-						var i = _on.dragStart.indexOf(callback);
-						if (i > -1) _on.dragStart.splice(i, 1);
+						var i = _on.dragstart.indexOf(callback);
+						if (i > -1) _on.dragstart.splice(i, 1);
 					}
 					if (eventName.toLowerCase() === 'dragend') {
-						var i = _on.dragEnd.indexOf(callback);
-						if (i > -1) _on.dragEnd.splice(i, 1);
+						var i = _on.dragend.indexOf(callback);
+						if (i > -1) _on.dragend.splice(i, 1);
 					}
 					if (eventName.toLowerCase() === 'drag') {
 						var i = _on.drag.indexOf(callback);
@@ -420,17 +416,17 @@
 
 					_element.on('dragenter', function(){
 						for (var i = _on.dragenter.length - 1; i >= 0; i--) {
-							_on.dragenter[i](_self);
+							_self.trigger('dragenter', _self);
 						};
 					});
 					_element.on('dragover', function(){
 						for (var i = _on.dragover.length - 1; i >= 0; i--) {
-							_on.dragover[i](_self);
+							_self.trigger('dragover', _self);
 						};
 					});
 					_element.on('dragleave', function(){
 						for (var i = _on.dragleave.length - 1; i >= 0; i--) {
-							_on.dragleave[i](_self);
+							_self.trigger('dragleave', _self);
 						};
 					});
 
@@ -439,31 +435,33 @@
 					_element.on('mouseenter', function(){
 						// Need to ask draggy service if the user is dragging something
 						if ($drag.isDraggingObject()) {
-							for (var i = _on.dragenter.length - 1; i >= 0; i--) {
-								_on.dragenter[i](_self);
-							};
+							_self.trigger('dragenter', _self);
 						}
 					});
 					_element.on('mouseover', function(){
 						// Need to ask draggy service if the user is dragging something
 						if ($drag.isDraggingObject()) {
 							for (var i = _on.dragover.length - 1; i >= 0; i--) {
-								_on.dragover[i](_self);
+								_self.trigger('dragover', _self);
 							};
 						}
 					});
 					_element.on('mouseout', function(){
 						// Need to ask draggy service if the user is dragging something
 						if ($drag.isDraggingObject()) {
-							for (var i = _on.dragleave.length - 1; i >= 0; i--) {
-								_on.dragleave[i](_self);
-							};
+							_self.trigger('dragleave', _self);
 						}
 					});
 
 				}
 
 				// ########## END CONSTRUCTOR
+
+				this.trigger = function(eventName, arguments){
+					for (var i = _on[eventName].length - 1; i >= 0; i--) {
+						_on[eventName][i](arguments);
+					};
+				}
 
 				this.getElement = function(){
 					return _element;
@@ -479,11 +477,6 @@
 					var i = _on[eventName].indexOf(callback);
 					if (i > -1) _on[eventName].splice(i, 1);
 				}
-				this.trigger = function(eventName, arguments){
-					for (var i = _on[eventName].length - 1; i >= 0; i--) {
-						_on[eventName][i](arguments);
-					};
-				}
 
 				// Let draggy service watch this(DraggableObject)'s events
 				$drag.$watchDropTarget(this);
@@ -495,6 +488,10 @@
 	function DataTransfer(data, model) {
 		var _data = data;
 		var _model = model;
+
+		this.getData = function() {
+			return _data;
+		}
 
 		this.hasData = function(){
 			return (typeof _data !== 'undefined' && _data != null);
