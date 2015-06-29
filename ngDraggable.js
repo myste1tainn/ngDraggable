@@ -102,7 +102,7 @@
 					_dropTarget	= null;
 				} else {
 
-					console.log('invalid drop');
+					console.log('myste1tainn/ngDraggable : Invalid Area Drop');
 
 				}
 			});
