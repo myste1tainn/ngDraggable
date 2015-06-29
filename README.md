@@ -3,9 +3,17 @@ ngDraggable is a drag-and-drop module for AngularJS capable of creating
 draggable-objects and drop-target on the fly. More information on this will be on soon.
 
 ## Installation
-`$ bower install myste1tainn/ngDraggable`
-Add **ngDraggable** as dependencies on your module e.g.
-`var app = angular.module('myApp', ['ngDraggable'])`
+- Install with bower `$ bower install myste1tainn/ngDraggable`
+- Add **ngDraggable** as dependencies on your module e.g. `var app = angular.module('myApp', ['ngDraggable'])`
+
+## Usage
+- For an element to be draggable, add `draggable-object` attribute.
+- For an element to be a drop target, add `drop-target` attribute.
+
+```
+<div draggable-object>Drag Me!</div>
+<div drop-target>Drop Here</div>
+```
 
 ## Features
 - Drag-and-Drop w/o data
