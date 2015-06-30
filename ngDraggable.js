@@ -223,6 +223,10 @@
 					_element.attr('draggable', 'true');
 					_element.on('dragstart', function(event){
 
+						// Firefox require that user trigger dataTransfer.setData()
+						// in dragstart event or it won't startup the drag.
+						event.originalEvent.dataTransfer.setData('text/plain', 'anything');
+
 						_isBeingDragged = true;
 						_self.trigger('dragstart', _self);
 
